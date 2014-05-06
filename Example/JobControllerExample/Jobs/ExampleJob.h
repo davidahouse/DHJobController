@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 randomaccident. All rights reserved.
 //
 
-#import "RAJobController.h"
+#import "DHJobController.h"
 
 FOUNDATION_EXPORT const NSString *kExampleJobUpdateNotification;
 
-@interface ExampleJob : RAJobController
+@interface ExampleJob : DHJobController
 
 #pragma mark - Properties
 @property (nonatomic,strong) UIColor *taskAColor;

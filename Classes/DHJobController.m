@@ -1,6 +1,6 @@
 //
-//  RAJobController.m
-//  RAJobController
+//  DHJobController.m
+//  DHJobController
 //
 //  Created by David House on 4/13/14.
 //  Copyright (c) 2014 David House <davidahouse@gmail.com>
@@ -24,15 +24,15 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "RAJobController.h"
+#import "DHJobController.h"
 #import <Objc/runtime.h>
-#import "RAJobControllerTask.h"
-#import "RAJobControllerTaskGroup.h"
+#import "DHJobControllerTask.h"
+#import "DHJobControllerTaskGroup.h"
 
 //
 //
 //
-@interface RAJobController()
+@interface DHJobController()
 
 #pragma mark - Properties
 @property (nonatomic,strong) NSMutableDictionary *currentTasks;
@@ -44,7 +44,7 @@
 //
 //
 //
-@implementation RAJobController {
+@implementation DHJobController {
     NSOperationQueue *_defaultOperationQueue;
     dispatch_queue_t _completionQueue;
     NSOperationQueue *_concurrentQueue;
@@ -92,7 +92,7 @@
     
     NSLog(@"cancelling job. isCancelled == %@",[self isCancelled] ? @"YES" : @"NO");
     
-    for ( RAJobControllerTask *trackedOperation in [self.currentTasks allValues] ) {
+    for ( DHJobControllerTask *trackedOperation in [self.currentTasks allValues] ) {
         [trackedOperation.operation cancel];
     }
     [self.currentTasks removeAllObjects];
@@ -129,7 +129,7 @@
 #pragma mark - Track Operations
 - (void)trackTask:(id)task
 {
-    RAJobControllerTask *trackedOperation = [self jobOperationFromOperation:task];
+    DHJobControllerTask *trackedOperation = [self jobOperationFromOperation:task];
     [self addTrackedOperation:trackedOperation];
 }
 
@@ -141,7 +141,7 @@
 
 - (void)trackTask:(id)task withCompletion:(SEL)completionSelector
 {
-    RAJobControllerTask *trackedOperation = [self jobOperationFromOperation:task withCompletion:completionSelector];
+    DHJobControllerTask *trackedOperation = [self jobOperationFromOperation:task withCompletion:completionSelector];
     [self addTrackedOperation:trackedOperation];
 }
 
@@ -159,12 +159,12 @@
     // operation to the list, otherwise we need to create it
     if ( [self.groupedTasks objectForKey:groupKey] ) {
         
-        RAJobControllerTaskGroup *group = [self.groupedTasks objectForKey:groupKey];
+        DHJobControllerTaskGroup *group = [self.groupedTasks objectForKey:groupKey];
         group.groupCompletionSelector = completionSelector;
     }
     else {
         
-        RAJobControllerTaskGroup *group = [[RAJobControllerTaskGroup alloc] init];
+        DHJobControllerTaskGroup *group = [[DHJobControllerTaskGroup alloc] init];
         group.groupName = groupKey;
         group.operationCount = 0;
         group.groupCompletionSelector = completionSelector;
@@ -175,7 +175,7 @@
 #pragma mark - Private Methods
 - (void)operationDone:(NSString *)operationID
 {
-    RAJobControllerTask *trackedOperation = [self.currentTasks objectForKey:operationID];
+    DHJobControllerTask *trackedOperation = [self.currentTasks objectForKey:operationID];
     NSString *groupKey = NSStringFromClass([trackedOperation.operation class]);
     
     // Remove operation from our dictionary
@@ -193,7 +193,7 @@
     
     // Now lets check the group as well
     if ( [self.groupedTasks objectForKey:groupKey] ) {
-        RAJobControllerTaskGroup *group = [self.groupedTasks objectForKey:groupKey];
+        DHJobControllerTaskGroup *group = [self.groupedTasks objectForKey:groupKey];
         group.operationCount--;
         if ( group.operationCount == 0 ) {
             
@@ -219,28 +219,28 @@
     [self didChangeValueForKey:@"isFinished"];
 }
 
-- (RAJobControllerTask *)jobOperationFromOperation:(id)operation
+- (DHJobControllerTask *)jobOperationFromOperation:(id)operation
 {
     NSString *operationID = [NSString stringWithFormat:@"%@_%@",NSStringFromClass([operation class]),[[NSUUID UUID] UUIDString]];
 
-    RAJobControllerTask *trackedOperation = [[RAJobControllerTask alloc] init];
+    DHJobControllerTask *trackedOperation = [[DHJobControllerTask alloc] init];
     trackedOperation.operation = operation;
     trackedOperation.operationID = operationID;
     return trackedOperation;
 }
 
-- (RAJobControllerTask *)jobOperationFromOperation:(id)operation withCompletion:(SEL)completionSelector
+- (DHJobControllerTask *)jobOperationFromOperation:(id)operation withCompletion:(SEL)completionSelector
 {
     NSString *operationID = [NSString stringWithFormat:@"%@_%@",NSStringFromClass([operation class]),[[NSUUID UUID] UUIDString]];
 
-    RAJobControllerTask *trackedOperation = [[RAJobControllerTask alloc] init];
+    DHJobControllerTask *trackedOperation = [[DHJobControllerTask alloc] init];
     trackedOperation.operationID = operationID;
     trackedOperation.operation = operation;
     trackedOperation.completionSelector = completionSelector;
     return trackedOperation;
 }
 
-- (void)addTrackedOperation:(RAJobControllerTask *)trackedOperation
+- (void)addTrackedOperation:(DHJobControllerTask *)trackedOperation
 {
     NSString *groupKey = NSStringFromClass([trackedOperation.operation class]);
 
@@ -260,12 +260,12 @@
     // operation to the list, otherwise we need to create it
     if ( [self.groupedTasks objectForKey:groupKey] ) {
         
-        RAJobControllerTaskGroup *group = [self.groupedTasks objectForKey:groupKey];
+        DHJobControllerTaskGroup *group = [self.groupedTasks objectForKey:groupKey];
         group.operationCount++;
     }
     else {
         
-        RAJobControllerTaskGroup *group = [[RAJobControllerTaskGroup alloc] init];
+        DHJobControllerTaskGroup *group = [[DHJobControllerTaskGroup alloc] init];
         group.groupName = groupKey;
         group.operationCount = 1;
         [self.groupedTasks setObject:group forKey:groupKey];

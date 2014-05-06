@@ -1,6 +1,6 @@
 //
-//  RAJobController.h
-//  RAJobController
+//  DHJobController.h
+//  DHJobController
 //
 //  Created by David House on 4/13/14.
 //  Copyright (c) 2014 David House <davidahouse@gmail.com>
@@ -25,19 +25,19 @@
 //
 #import <Foundation/Foundation.h>
 
-/** The 'RAJobController' class manages NSOperation tasks. Tasks are tracked by
+/** The 'DHJobController' class manages NSOperation tasks. Tasks are tracked by
  * the controller, and callbacks are made when tasks complete so that logic for
  * what happens next can be contained outside the task. The goal of the job controller
  * is to keep the tasks independent of each other, and connect them together in
  * the controller. This creates very clean code and places all the complexity for jobs
  * in a single place rather than spread across your code.
  *
- * The RAJobController is meant to be sub-classed. Subclasses have the option to respond
+ * The DHJobController is meant to be sub-classed. Subclasses have the option to respond
  * to generic callbacks when tasks are completed, or provide their own selectors/blocks
- * to handle callbacks. Also, the RAJobController is an NSOperation itself, so jobs can
+ * to handle callbacks. Also, the DHJobController is an NSOperation itself, so jobs can
  * be easily nested to create very complicated flows.
  */
-@interface RAJobController : NSOperation
+@interface DHJobController : NSOperation
 
 #pragma mark - Properties
 @property (nonatomic,readonly) NSOperationQueue *defaultOperationQueue;

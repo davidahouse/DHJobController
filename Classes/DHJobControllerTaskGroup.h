@@ -1,5 +1,5 @@
 //
-//  RAJobControllerTask.m
+//  DHJobControllerTaskGroup.h
 //  
 //
 //  Created by David House on 4/27/14.
@@ -24,8 +24,19 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-#import "RAJobControllerTask.h"
+#import <Foundation/Foundation.h>
 
-@implementation RAJobControllerTask
+/** Task object used internally by the Job Controller.
+ * You don't need to create any of these in
+ * Job Controller subclasses. Nothing to
+ * see here.
+ */
+
+@interface DHJobControllerTaskGroup : NSObject
+
+#pragma mark - Properties
+@property (nonatomic,strong) NSString *groupName;
+@property (nonatomic,assign) NSUInteger operationCount;
+@property (nonatomic,assign) SEL groupCompletionSelector;
 
 @end
