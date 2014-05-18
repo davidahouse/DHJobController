@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DHConcurrentOperation.h"
 
-@interface TaskC : NSOperation
+@interface TaskC : DHConcurrentOperation
 
 #pragma mark - Properties
 @property (nonatomic,strong) UIColor *outputColor;

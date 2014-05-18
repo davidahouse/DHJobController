@@ -22,6 +22,12 @@
       <FileRef
          location = "group:../Classes/DHJobControllerTaskGroup.m">
       </FileRef>
+      <FileRef
+         location = "group:../Classes/DHConcurrentOperation.h">
+      </FileRef>
+      <FileRef
+         location = "group:../Classes/DHConcurrentOperation.m">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:JobControllerExample.xcodeproj">

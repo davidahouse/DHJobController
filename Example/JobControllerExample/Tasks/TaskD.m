@@ -14,7 +14,6 @@
 @property (nonatomic,strong) UIColor *redColor;
 @property (nonatomic,strong) UIColor *greenColor;
 @property (nonatomic,strong) UIColor *blueColor;
-@property (nonatomic,assign,getter = isDone) BOOL done;
 @property (nonatomic,strong) NSTimer *timer;
 
 @end
@@ -33,26 +32,11 @@
 }
 
 #pragma mark - NSOperation stuff
-- (void)start
+- (void)operationStart
 {
-    @autoreleasepool {
-        
-        if (![NSThread isMainThread])
-        {
-            [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
-            return;
-        }
-
-        self.done = NO;
-        if ( [self isCancelled] ) {
-            self.done = YES;
-            return ;
-        }
-        
-        NSTimeInterval taskDelay = (arc4random() % 50) / 100.0;
-        self.timer = [NSTimer timerWithTimeInterval:taskDelay target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
-    }
+    NSTimeInterval taskDelay = (arc4random() % 50) / 100.0;
+    self.timer = [NSTimer timerWithTimeInterval:taskDelay target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
 }
 
 - (void)timerFired:(NSTimer *)timer
@@ -65,25 +49,8 @@
     [self.blueColor getRed:NULL green:NULL blue:&blue alpha:NULL];
     
     self.outputColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-    
-    [self willChangeValueForKey:@"isFinished"];
-    self.done = YES;
-    [self didChangeValueForKey:@"isFinished"];
-}
 
-- (BOOL)isFinished
-{
-    return [self isDone];
-}
-
-- (BOOL)isConcurrent
-{
-    return YES;
-}
-
-- (BOOL)isExecuting
-{
-    return ![self isDone];
+    [self operationDone];
 }
 
 - (void)cancel
@@ -91,9 +58,7 @@
     if ( self.timer ) {
         [self.timer invalidate];
         self.timer = nil;
-        [self willChangeValueForKey:@"isFinished"];
-        self.done = YES;
-        [self didChangeValueForKey:@"isFinished"];
+        [self operationDone];
     }
     [super cancel];
 }
