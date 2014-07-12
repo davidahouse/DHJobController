@@ -29,6 +29,10 @@
 
 #pragma mark - Public Methods
 
+/** Maximum runtime in seconds 
+ */
+@property (nonatomic,assign) NSUInteger maximumRuntime;
+
 /** Called when the operation is done
  *
  * Called by the subclass to indicate that the operation has completed.
@@ -40,5 +44,13 @@
  * Implemented by the subclass to start the concurrent operation
  */
 - (void)operationStart;
+
+/** Perform a selector after a delay
+ *
+ * Execute a selector on a background queue after a delay
+ * @param selector The selector on this operation to execute
+ * @param seconds The delay time in seconds
+ */
+- (void)execute:(SEL)selector afterDelay:(NSUInteger)seconds;
 
 @end

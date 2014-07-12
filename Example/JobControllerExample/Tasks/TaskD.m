@@ -14,7 +14,6 @@
 @property (nonatomic,strong) UIColor *redColor;
 @property (nonatomic,strong) UIColor *greenColor;
 @property (nonatomic,strong) UIColor *blueColor;
-@property (nonatomic,strong) NSTimer *timer;
 
 @end
 
@@ -34,12 +33,11 @@
 #pragma mark - NSOperation stuff
 - (void)operationStart
 {
-    NSTimeInterval taskDelay = (arc4random() % 50) / 100.0;
-    self.timer = [NSTimer timerWithTimeInterval:taskDelay target:self selector:@selector(timerFired:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+    NSTimeInterval taskDelay = arc4random() % 2;
+    [self execute:@selector(timerFired) afterDelay:taskDelay];
 }
 
-- (void)timerFired:(NSTimer *)timer
+- (void)timerFired
 {
     CGFloat red;
     CGFloat green;
@@ -53,13 +51,4 @@
     [self operationDone];
 }
 
-- (void)cancel
-{
-    if ( self.timer ) {
-        [self.timer invalidate];
-        self.timer = nil;
-        [self operationDone];
-    }
-    [super cancel];
-}
 @end
