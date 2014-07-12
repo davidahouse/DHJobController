@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DHJobController"
-  s.version          = "0.2.0"
+  s.version          = "0.2.1"
   s.summary          = "An Objective-C wrapper to control NSOperations jobs."
   s.homepage         = "https://github.com/davidahouse/DHJobController"
   s.license          = 'MIT'
